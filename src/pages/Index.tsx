@@ -1,12 +1,58 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { HomeScreen } from "@/screens/HomeScreen";
+import { GameScreen } from "@/screens/GameScreen";
+import { StatsScreen } from "@/screens/StatsScreen";
+import { SettingsScreen } from "@/screens/SettingsScreen";
+
+type Screen = 'home' | 'game' | 'stats' | 'settings';
 
 const Index = () => {
+  const [currentScreen, setCurrentScreen] = useState<Screen>('home');
+  const [gameDifficulty, setGameDifficulty] = useState<string>('medio');
+  const [loadSavedGame, setLoadSavedGame] = useState(false);
+
+  const handleNewGame = (difficulty: string) => {
+    setGameDifficulty(difficulty);
+    setLoadSavedGame(false);
+    setCurrentScreen('game');
+  };
+
+  const handleContinueGame = () => {
+    setLoadSavedGame(true);
+    setCurrentScreen('game');
+  };
+
+  const handleHomeNavigation = () => {
+    setCurrentScreen('home');
+    setLoadSavedGame(false);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      {currentScreen === 'home' && (
+        <HomeScreen
+          onNewGame={handleNewGame}
+          onContinueGame={handleContinueGame}
+          onStats={() => setCurrentScreen('stats')}
+          onSettings={() => setCurrentScreen('settings')}
+        />
+      )}
+
+      {currentScreen === 'game' && (
+        <GameScreen
+          difficulty={gameDifficulty}
+          onHome={handleHomeNavigation}
+          loadSavedGame={loadSavedGame}
+        />
+      )}
+
+      {currentScreen === 'stats' && (
+        <StatsScreen onBack={handleHomeNavigation} />
+      )}
+
+      {currentScreen === 'settings' && (
+        <SettingsScreen onBack={handleHomeNavigation} />
+      )}
     </div>
   );
 };

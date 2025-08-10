@@ -44,6 +44,10 @@ export default {
 					DEFAULT: 'hsl(var(--accent))',
 					foreground: 'hsl(var(--accent-foreground))'
 				},
+				warning: {
+					DEFAULT: 'hsl(var(--warning))',
+					foreground: 'hsl(var(--warning-foreground))'
+				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
 					foreground: 'hsl(var(--popover-foreground))'
@@ -51,6 +55,19 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
+				},
+				// Sudoku specific colors
+				cell: {
+					background: 'hsl(var(--cell-background))',
+					given: 'hsl(var(--cell-given))',
+					selected: 'hsl(var(--cell-selected))',
+					highlighted: 'hsl(var(--cell-highlighted))',
+					conflict: 'hsl(var(--cell-conflict))',
+					notes: 'hsl(var(--cell-notes))'
+				},
+				grid: {
+					thick: 'hsl(var(--grid-thick))',
+					thin: 'hsl(var(--grid-thin))'
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
