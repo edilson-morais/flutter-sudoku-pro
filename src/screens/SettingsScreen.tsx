@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
@@ -23,6 +23,10 @@ interface SettingsScreenProps {
 }
 
 export function SettingsScreen({ onBack }: SettingsScreenProps) {
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem('sudoku_dark_mode') === 'true' || 
+    (localStorage.getItem('sudoku_dark_mode') === null && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  );
   const [soundEnabled, setSoundEnabled] = useState(
     localStorage.getItem('sudoku_sound_enabled') !== 'false'
   );
@@ -35,6 +39,21 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
   
   const storageService = new StorageService();
   const { toast } = useToast();
+
+  // Apply dark mode on mount and when changed
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isDarkMode) {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+    localStorage.setItem('sudoku_dark_mode', isDarkMode.toString());
+  }, [isDarkMode]);
+
+  const handleDarkModeToggle = (enabled: boolean) => {
+    setIsDarkMode(enabled);
+  };
 
   const handleSoundToggle = (enabled: boolean) => {
     setSoundEnabled(enabled);
@@ -133,6 +152,31 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
             <p className="text-muted-foreground">Personalize sua experiência</p>
           </div>
         </div>
+
+        {/* Appearance Settings */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              {isDarkMode ? <Moon className="h-5 w-5 text-primary" /> : <Sun className="h-5 w-5 text-primary" />}
+              Aparência
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <div className="space-y-0.5">
+                <Label htmlFor="dark-mode">Modo Escuro</Label>
+                <p className="text-sm text-muted-foreground">
+                  Interface com cores escuras para reduzir o cansaço visual
+                </p>
+              </div>
+              <Switch
+                id="dark-mode"
+                checked={isDarkMode}
+                onCheckedChange={handleDarkModeToggle}
+              />
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Game Settings */}
         <Card>
