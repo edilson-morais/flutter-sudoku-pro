@@ -19,18 +19,21 @@ export class SudokuService {
 
   // Validation
   isValid(board: Board, row: number, col: number, value: number): boolean {
-    // Check row and column
+    // Check row and column (excluding the current cell)
     for (let i = 0; i < 9; i++) {
-      if (board[row][i] === value) return false;
-      if (board[i][col] === value) return false;
+      if (i !== col && board[row][i] === value) return false;
+      if (i !== row && board[i][col] === value) return false;
     }
 
-    // Check 3x3 block
+    // Check 3x3 block (excluding the current cell)
     const blockRow = Math.floor(row / 3) * 3;
     const blockCol = Math.floor(col / 3) * 3;
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
-        if (board[blockRow + i][blockCol + j] === value) return false;
+        const currentRow = blockRow + i;
+        const currentCol = blockCol + j;
+        if (currentRow !== row && currentCol !== col && 
+            board[currentRow][currentCol] === value) return false;
       }
     }
 
@@ -265,7 +268,7 @@ export class SudokuService {
     const blockCol = Math.floor(col / 3) * 3;
     for (let r = blockRow; r < blockRow + 3; r++) {
       for (let c = blockCol; c < blockCol + 3; c++) {
-        if ((r !== row || c !== col) && board[r][c] === value) {
+        if (r !== row && c !== col && board[r][c] === value) {
           conflicts.push([r, c]);
         }
       }
