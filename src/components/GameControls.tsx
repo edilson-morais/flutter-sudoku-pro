@@ -40,33 +40,33 @@ export function GameControls({
   onHome
 }: GameControlsProps) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       {/* Timer and Status */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Clock className="h-4 w-4 text-muted-foreground" />
-          <span className="font-mono text-lg font-semibold">{timer}</span>
+      <div className="flex items-center justify-between px-2">
+        <div className="flex items-center gap-1">
+          <Clock className="h-3 w-3 text-muted-foreground" />
+          <span className="font-mono text-sm font-semibold">{timer}</span>
         </div>
-        <div className="flex items-center gap-2">
-          <Zap className="h-4 w-4 text-warning" />
-          <Badge variant="outline">
+        <div className="flex items-center gap-1">
+          <Zap className="h-3 w-3 text-warning" />
+          <Badge variant="outline" className="text-xs px-1">
             {hintsUsed}/{maxHints}
           </Badge>
         </div>
       </div>
 
-      {/* Game Action Buttons */}
-      <div className="grid grid-cols-2 gap-2">
+      {/* Game Action Buttons - Compact Grid */}
+      <div className="grid grid-cols-3 gap-1">
         <Button
           variant={isNotesMode ? "default" : "outline"}
           size="sm"
           onClick={onToggleNotes}
           className={cn(
-            "flex items-center gap-2",
+            "text-xs h-8",
             isNotesMode && "bg-accent text-accent-foreground"
           )}
         >
-          <Edit className="h-4 w-4" />
+          <Edit className="h-3 w-3 mr-1" />
           Notas
         </Button>
 
@@ -75,8 +75,9 @@ export function GameControls({
           size="sm"
           onClick={onUndo}
           disabled={!canUndo}
+          className="text-xs h-8"
         >
-          <Undo className="h-4 w-4" />
+          <Undo className="h-3 w-3 mr-1" />
           Desfazer
         </Button>
 
@@ -85,29 +86,32 @@ export function GameControls({
           size="sm"
           onClick={onHint}
           disabled={hintsUsed >= maxHints}
+          className="text-xs h-8"
         >
-          <Lightbulb className="h-4 w-4" />
+          <Lightbulb className="h-3 w-3 mr-1" />
           Dica
-        </Button>
-
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onRestart}
-        >
-          <RotateCcw className="h-4 w-4" />
-          Reiniciar
         </Button>
       </div>
 
       {/* Navigation Buttons */}
-      <div className="grid grid-cols-2 gap-2">
+      <div className="grid grid-cols-3 gap-1">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onRestart}
+          className="text-xs h-8"
+        >
+          <RotateCcw className="h-3 w-3 mr-1" />
+          Reiniciar
+        </Button>
+
         <Button
           variant="secondary"
           size="sm"
           onClick={onSave}
+          className="text-xs h-8"
         >
-          <Save className="h-4 w-4" />
+          <Save className="h-3 w-3 mr-1" />
           Salvar
         </Button>
 
@@ -115,8 +119,9 @@ export function GameControls({
           variant="secondary"
           size="sm"
           onClick={onHome}
+          className="text-xs h-8"
         >
-          <Home className="h-4 w-4" />
+          <Home className="h-3 w-3 mr-1" />
           Menu
         </Button>
       </div>

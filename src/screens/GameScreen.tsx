@@ -324,36 +324,42 @@ export function GameScreen({ difficulty, onHome, loadSavedGame = false }: GameSc
   }
 
   return (
-    <div className="min-h-screen bg-background p-4 pb-safe">
-      <div className="max-w-md mx-auto space-y-4">
+    <div className="min-h-screen bg-background p-2 pb-safe flex flex-col">
+      <div className="max-w-md mx-auto flex-1 flex flex-col space-y-2">
         {/* Game Board */}
-        <SudokuBoard
-          gameState={gameState}
-          conflicts={conflicts}
-          onCellClick={handleCellClick}
-        />
+        <div className="flex-shrink-0">
+          <SudokuBoard
+            gameState={gameState}
+            conflicts={conflicts}
+            onCellClick={handleCellClick}
+          />
+        </div>
 
         {/* Game Controls */}
-        <GameControls
-          isNotesMode={gameState.isNotesMode}
-          hintsUsed={gameState.hintsUsed}
-          maxHints={gameState.maxHints}
-          canUndo={gameState.history.length > 1}
-          timer={timer}
-          onToggleNotes={handleToggleNotes}
-          onUndo={handleUndo}
-          onRestart={handleRestart}
-          onHint={handleHint}
-          onSave={handleSave}
-          onHome={onHome}
-        />
+        <div className="flex-shrink-0">
+          <GameControls
+            isNotesMode={gameState.isNotesMode}
+            hintsUsed={gameState.hintsUsed}
+            maxHints={gameState.maxHints}
+            canUndo={gameState.history.length > 1}
+            timer={timer}
+            onToggleNotes={handleToggleNotes}
+            onUndo={handleUndo}
+            onRestart={handleRestart}
+            onHint={handleHint}
+            onSave={handleSave}
+            onHome={onHome}
+          />
+        </div>
 
         {/* Number Pad */}
-        <NumberPad
-          onNumberSelect={handleNumberInput}
-          onErase={handleErase}
-          disabled={!gameState.selectedCell || gameState.initialBoard[gameState.selectedCell[0]][gameState.selectedCell[1]] !== 0}
-        />
+        <div className="flex-shrink-0 mt-auto">
+          <NumberPad
+            onNumberSelect={handleNumberInput}
+            onErase={handleErase}
+            disabled={!gameState.selectedCell || gameState.initialBoard[gameState.selectedCell[0]][gameState.selectedCell[1]] !== 0}
+          />
+        </div>
       </div>
     </div>
   );

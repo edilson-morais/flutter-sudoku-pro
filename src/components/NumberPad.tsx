@@ -12,17 +12,16 @@ export function NumberPad({ onNumberSelect, onErase, disabled }: NumberPadProps)
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   return (
-    <div className="bg-card rounded-lg p-4 shadow-lg">
-      <div className="grid grid-cols-3 gap-3">
+    <div className="bg-card rounded-lg p-2 shadow-lg">
+      <div className="grid grid-cols-3 gap-2">
         {numbers.map((number) => (
           <Button
             key={number}
             variant="outline"
-            size="lg"
             onClick={() => onNumberSelect(number)}
             disabled={disabled}
             className={cn(
-              "h-12 text-lg font-bold",
+              "h-10 text-base font-bold aspect-square",
               "hover:bg-primary hover:text-primary-foreground",
               "active:scale-95 transition-transform"
             )}
@@ -34,12 +33,11 @@ export function NumberPad({ onNumberSelect, onErase, disabled }: NumberPadProps)
         {/* Erase button takes up space of one number */}
         <Button
           variant="destructive"
-          size="lg"
           onClick={onErase}
           disabled={disabled}
-          className="h-12 flex items-center justify-center col-start-2"
+          className="h-10 flex items-center justify-center col-start-2 aspect-square"
         >
-          <Eraser className="h-5 w-5" />
+          <Eraser className="h-4 w-4" />
         </Button>
       </div>
     </div>
