@@ -40,12 +40,12 @@ export function GameControls({
   onHome
 }: GameControlsProps) {
   return (
-    <div className="space-y-2">
+    <div className="space-y-1.5 sm:space-y-2 max-w-sm mx-auto">
       {/* Timer and Status */}
-      <div className="flex items-center justify-between px-2">
+      <div className="flex items-center justify-between px-1 sm:px-2">
         <div className="flex items-center gap-1">
           <Clock className="h-3 w-3 text-muted-foreground" />
-          <span className="font-mono text-sm font-semibold">{timer}</span>
+          <span className="font-mono text-xs sm:text-sm font-semibold">{timer}</span>
         </div>
         <div className="flex items-center gap-1">
           <Zap className="h-3 w-3 text-warning" />
@@ -62,12 +62,12 @@ export function GameControls({
           size="sm"
           onClick={onToggleNotes}
           className={cn(
-            "text-xs h-8",
+            "text-xs h-7 sm:h-8 px-1 sm:px-2",
             isNotesMode && "bg-accent text-accent-foreground"
           )}
         >
-          <Edit className="h-3 w-3 mr-1" />
-          Notas
+          <Edit className="h-3 w-3 sm:mr-1" />
+          <span className="hidden sm:inline">Notas</span>
         </Button>
 
         <Button
@@ -75,10 +75,10 @@ export function GameControls({
           size="sm"
           onClick={onUndo}
           disabled={!canUndo}
-          className="text-xs h-8"
+          className="text-xs h-7 sm:h-8 px-1 sm:px-2"
         >
-          <Undo className="h-3 w-3 mr-1" />
-          Desfazer
+          <Undo className="h-3 w-3 sm:mr-1" />
+          <span className="hidden sm:inline">Desfazer</span>
         </Button>
 
         <Button
@@ -86,10 +86,10 @@ export function GameControls({
           size="sm"
           onClick={onHint}
           disabled={hintsUsed >= maxHints}
-          className="text-xs h-8"
+          className="text-xs h-7 sm:h-8 px-1 sm:px-2"
         >
-          <Lightbulb className="h-3 w-3 mr-1" />
-          Dica
+          <Lightbulb className="h-3 w-3 sm:mr-1" />
+          <span className="hidden sm:inline">Dica</span>
         </Button>
       </div>
 
@@ -99,30 +99,30 @@ export function GameControls({
           variant="outline"
           size="sm"
           onClick={onRestart}
-          className="text-xs h-8"
+          className="text-xs h-7 sm:h-8 px-1 sm:px-2"
         >
-          <RotateCcw className="h-3 w-3 mr-1" />
-          Reiniciar
+          <RotateCcw className="h-3 w-3 sm:mr-1" />
+          <span className="hidden sm:inline">Reiniciar</span>
         </Button>
 
         <Button
           variant="secondary"
           size="sm"
           onClick={onSave}
-          className="text-xs h-8"
+          className="text-xs h-7 sm:h-8 px-1 sm:px-2"
         >
-          <Save className="h-3 w-3 mr-1" />
-          Salvar
+          <Save className="h-3 w-3 sm:mr-1" />
+          <span className="hidden sm:inline">Salvar</span>
         </Button>
 
         <Button
           variant="secondary"
           size="sm"
           onClick={onHome}
-          className="text-xs h-8"
+          className="text-xs h-7 sm:h-8 px-1 sm:px-2"
         >
-          <Home className="h-3 w-3 mr-1" />
-          Menu
+          <Home className="h-3 w-3 sm:mr-1" />
+          <span className="hidden sm:inline">Menu</span>
         </Button>
       </div>
     </div>

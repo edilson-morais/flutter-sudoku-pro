@@ -324,8 +324,8 @@ export function GameScreen({ difficulty, onHome, loadSavedGame = false }: GameSc
   }
 
   return (
-    <div className="min-h-screen bg-background p-2 pb-safe flex flex-col">
-      <div className="max-w-md mx-auto flex-1 flex flex-col space-y-2">
+    <div className="min-h-screen min-h-[100dvh] bg-background p-1 sm:p-2 flex flex-col overflow-hidden">
+      <div className="max-w-sm sm:max-w-md mx-auto flex-1 flex flex-col space-y-1 sm:space-y-2 px-1 sm:px-0">
         {/* Game Board */}
         <div className="flex-shrink-0">
           <SudokuBoard
@@ -353,7 +353,7 @@ export function GameScreen({ difficulty, onHome, loadSavedGame = false }: GameSc
         </div>
 
         {/* Number Pad */}
-        <div className="flex-shrink-0 mt-auto">
+        <div className="flex-shrink-0 pb-1 sm:pb-2">
           <NumberPad
             onNumberSelect={handleNumberInput}
             onErase={handleErase}

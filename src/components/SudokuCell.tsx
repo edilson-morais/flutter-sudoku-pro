@@ -50,7 +50,7 @@ export function SudokuCell({
       {value > 0 ? (
         <span className="text-center">{value}</span>
       ) : notes.length > 0 ? (
-        <div className="grid grid-cols-3 gap-0 text-[0.5rem] text-cell-notes p-1">
+        <div className="grid grid-cols-3 gap-0 text-[0.45rem] sm:text-[0.5rem] text-cell-notes p-0.5 sm:p-1">
           {Array.from({ length: 9 }, (_, i) => (
             <div key={i + 1} className="text-center leading-none">
               {notes.includes(i + 1) ? i + 1 : ''}

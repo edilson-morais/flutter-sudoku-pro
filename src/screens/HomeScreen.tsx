@@ -34,14 +34,14 @@ export function HomeScreen({ onNewGame, onContinueGame, onStats, onSettings }: H
   ];
 
   return (
-    <div className="min-h-screen bg-background p-4">
-      <div className="max-w-md mx-auto space-y-6">
+    <div className="min-h-screen min-h-[100dvh] bg-background p-3 sm:p-4 overflow-y-auto">
+      <div className="max-w-sm sm:max-w-md mx-auto space-y-4 sm:space-y-6 pb-4">
         {/* Header */}
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent">
+        <div className="text-center space-y-2 pt-2">
+          <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent">
             Sudoku
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm sm:text-base text-muted-foreground">
             Desafie sua mente com o clássico jogo de números
           </p>
         </div>

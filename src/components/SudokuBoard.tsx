@@ -29,8 +29,8 @@ export function SudokuBoard({ gameState, conflicts, onCellClick }: SudokuBoardPr
   };
 
   return (
-    <div className="bg-card rounded-lg p-1 shadow-lg">
-      <div className="grid grid-cols-9 gap-0 border-2 border-grid-thick rounded-lg overflow-hidden">
+    <div className="bg-card rounded-lg p-1 shadow-lg w-full max-w-sm mx-auto">
+      <div className="grid grid-cols-9 gap-0 border-2 border-grid-thick rounded-lg overflow-hidden aspect-square">
         {board.map((row, rowIndex) =>
           row.map((cell, colIndex) => (
             <SudokuCell

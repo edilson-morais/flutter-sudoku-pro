@@ -28,7 +28,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen min-h-[100dvh] bg-background safe-area-padding">
       {currentScreen === 'home' && (
         <HomeScreen
           onNewGame={handleNewGame}
