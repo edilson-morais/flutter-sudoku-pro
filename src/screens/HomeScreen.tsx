@@ -78,25 +78,23 @@ export function HomeScreen({ onNewGame, onContinueGame, onStats, onSettings }: H
               <label className="text-sm font-medium text-muted-foreground">
                 Escolha a dificuldade:
               </label>
-              <div className="grid gap-2">
+               <div className="grid grid-cols-3 gap-2">
                 {difficulties.map((diff) => (
                   <button
                     key={diff.key}
                     onClick={() => setSelectedDifficulty(diff.key)}
-                    className={`p-3 rounded-lg border-2 transition-all text-left ${
+                    className={`p-2 rounded-lg border-2 transition-all text-center ${
                       selectedDifficulty === diff.key
                         ? "border-primary bg-primary/10"
                         : "border-border hover:border-primary/50"
                     }`}
                   >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-semibold">{diff.name}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {diff.description}
-                        </div>
+                    <div className="space-y-1">
+                      <div className="font-semibold text-sm">{diff.name}</div>
+                      <div className="text-xs text-muted-foreground">
+                        {diff.description}
                       </div>
-                      <div className={`w-3 h-3 rounded-full ${diff.color}`} />
+                      <div className={`w-2 h-2 rounded-full ${diff.color} mx-auto`} />
                     </div>
                   </button>
                 ))}

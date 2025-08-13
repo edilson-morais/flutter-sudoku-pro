@@ -45,14 +45,15 @@ export function GameScreen({ difficulty, onHome, loadSavedGame = false }: GameSc
     if (!gameState || isCompleted) return;
 
     const interval = setInterval(() => {
-      const elapsed = Math.floor((Date.now() - gameState.startTime) / 1000);
+      const now = Date.now();
+      const elapsed = Math.floor((now - gameState.startTime) / 1000);
       const minutes = Math.floor(elapsed / 60);
       const seconds = elapsed % 60;
       setTimer(`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [gameState, isCompleted]);
+  }, [gameState?.startTime, isCompleted]);
 
   // Auto-save
   useEffect(() => {
@@ -117,7 +118,7 @@ export function GameScreen({ difficulty, onHome, loadSavedGame = false }: GameSc
     
     const [row, col] = gameState.selectedCell;
     
-    // Can't modify given cells
+    // Can't modify given cells (only initial numbers)
     if (gameState.initialBoard[row][col] !== 0) return;
 
     setGameState(prev => {
@@ -155,7 +156,7 @@ export function GameScreen({ difficulty, onHome, loadSavedGame = false }: GameSc
     
     const [row, col] = gameState.selectedCell;
     
-    // Can't modify given cells
+    // Can't modify given cells (only initial numbers)
     if (gameState.initialBoard[row][col] !== 0) return;
 
     setGameState(prev => {
