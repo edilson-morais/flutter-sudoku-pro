@@ -1,13 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { SudokuBoard } from "@/components/SudokuBoard";
 import { NumberPad } from "@/components/NumberPad";
-import { GameControls } from "@/components/GameControls";
 import { SudokuService, GameState } from "@/services/sudoku-service";
 import { StorageService } from "@/services/storage-service";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trophy, Star } from "lucide-react";
+import { Trophy, Star, Home, RotateCcw, Save, Undo, Edit, Lightbulb, Eraser } from "lucide-react";
 
 interface GameScreenProps {
   difficulty: string;
@@ -324,41 +323,126 @@ export function GameScreen({ difficulty, onHome, loadSavedGame = false }: GameSc
   }
 
   return (
-    <div className="min-h-screen min-h-[100dvh] bg-background p-1 sm:p-2 flex flex-col overflow-hidden">
-      <div className="max-w-sm sm:max-w-md mx-auto flex-1 flex flex-col space-y-1 sm:space-y-2 px-1 sm:px-0">
-        {/* Game Board */}
-        <div className="flex-shrink-0">
-          <SudokuBoard
-            gameState={gameState}
-            conflicts={conflicts}
-            onCellClick={handleCellClick}
-          />
+    <div className="min-h-screen min-h-[100dvh] bg-background flex flex-col overflow-hidden">
+      {/* Header with Stats */}
+      <div className="bg-card border-b border-border px-3 py-2 flex-shrink-0">
+        <div className="max-w-sm mx-auto">
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div>
+              <p className="text-xs text-muted-foreground">Dificuldade</p>
+              <p className="text-sm font-medium capitalize">{difficulty}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Erros</p>
+              <p className="text-sm font-medium">0/3</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Tempo</p>
+              <p className="text-sm font-medium font-mono">{timer}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Game Content */}
+      <div className="flex-1 flex flex-col justify-between p-2">
+        <div className="max-w-sm mx-auto w-full space-y-2">
+          {/* Game Board */}
+          <div className="flex-shrink-0">
+            <SudokuBoard
+              gameState={gameState}
+              conflicts={conflicts}
+              onCellClick={handleCellClick}
+            />
+          </div>
+
+          {/* Simplified Game Controls */}
+          <div className="flex-shrink-0">
+            <div className="flex justify-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onHome}
+                className="h-8 px-2"
+              >
+                <Home className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleRestart}
+                className="h-8 px-2"
+              >
+                <RotateCcw className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleSave}
+                className="h-8 px-2"
+              >
+                <Save className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
         </div>
 
-        {/* Game Controls */}
-        <div className="flex-shrink-0">
-          <GameControls
-            isNotesMode={gameState.isNotesMode}
-            hintsUsed={gameState.hintsUsed}
-            maxHints={gameState.maxHints}
-            canUndo={gameState.history.length > 1}
-            timer={timer}
-            onToggleNotes={handleToggleNotes}
-            onUndo={handleUndo}
-            onRestart={handleRestart}
-            onHint={handleHint}
-            onSave={handleSave}
-            onHome={onHome}
-          />
-        </div>
+        {/* Bottom Controls */}
+        <div className="max-w-sm mx-auto w-full space-y-2">
+          {/* Action Buttons */}
+          <div className="grid grid-cols-4 gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleUndo}
+              disabled={gameState.history.length <= 1}
+              className="h-10 flex flex-col items-center justify-center text-xs"
+            >
+              <Undo className="h-4 w-4 mb-1" />
+              Desfazer
+            </Button>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleErase}
+              disabled={!gameState.selectedCell || gameState.initialBoard[gameState.selectedCell[0]][gameState.selectedCell[1]] !== 0}
+              className="h-10 flex flex-col items-center justify-center text-xs"
+            >
+              <Eraser className="h-4 w-4 mb-1" />
+              Apagar
+            </Button>
+            
+            <Button
+              variant={gameState.isNotesMode ? "default" : "outline"}
+              size="sm"
+              onClick={handleToggleNotes}
+              className="h-10 flex flex-col items-center justify-center text-xs"
+            >
+              <Edit className="h-4 w-4 mb-1" />
+              Anotações
+            </Button>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleHint}
+              disabled={gameState.hintsUsed >= gameState.maxHints}
+              className="h-10 flex flex-col items-center justify-center text-xs"
+            >
+              <Lightbulb className="h-4 w-4 mb-1" />
+              Dica ({gameState.hintsUsed}/{gameState.maxHints})
+            </Button>
+          </div>
 
-        {/* Number Pad */}
-        <div className="flex-shrink-0 pb-1 sm:pb-2">
-          <NumberPad
-            onNumberSelect={handleNumberInput}
-            onErase={handleErase}
-            disabled={!gameState.selectedCell || gameState.initialBoard[gameState.selectedCell[0]][gameState.selectedCell[1]] !== 0}
-          />
+          {/* Number Pad */}
+          <div className="pb-2">
+            <NumberPad
+              onNumberSelect={handleNumberInput}
+              onErase={handleErase}
+              disabled={!gameState.selectedCell || gameState.initialBoard[gameState.selectedCell[0]][gameState.selectedCell[1]] !== 0}
+            />
+          </div>
         </div>
       </div>
     </div>

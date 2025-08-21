@@ -17,11 +17,15 @@ export interface GameState {
 export class SudokuService {
   private rand = Math.random;
 
-  // Validation
+  // Validation - checks if a value can be placed at position (row, col)
   isValid(board: Board, row: number, col: number, value: number): boolean {
-    // Check row and column (excluding the current cell)
+    // Check row (excluding the current cell)
     for (let i = 0; i < 9; i++) {
       if (i !== col && board[row][i] === value) return false;
+    }
+
+    // Check column (excluding the current cell)  
+    for (let i = 0; i < 9; i++) {
       if (i !== row && board[i][col] === value) return false;
     }
 
@@ -32,12 +36,29 @@ export class SudokuService {
       for (let j = 0; j < 3; j++) {
         const currentRow = blockRow + i;
         const currentCol = blockCol + j;
-        if (currentRow !== row && currentCol !== col && 
+        if (!(currentRow === row && currentCol === col) && 
             board[currentRow][currentCol] === value) return false;
       }
     }
 
     return true;
+  }
+
+  // Helper method to check if a number placement would create conflicts
+  wouldCreateConflict(board: Board, row: number, col: number, value: number): boolean {
+    if (value === 0) return false; // Empty cell can't create conflicts
+    
+    // Temporarily place the value
+    const originalValue = board[row][col];
+    board[row][col] = value;
+    
+    // Check if this creates any conflicts
+    const hasConflicts = this.getConflicts(board, row, col).length > 0;
+    
+    // Restore original value
+    board[row][col] = originalValue;
+    
+    return hasConflicts;
   }
 
   // Backtracking solver
@@ -277,10 +298,28 @@ export class SudokuService {
     return conflicts;
   }
 
-  // Create initial game state
+  // Create initial game state with better difficulty balance
   createGameState(difficulty: string): GameState {
     const puzzle = this.generatePuzzle(difficulty);
-    const maxHints = difficulty === 'facil' ? 5 : difficulty === 'medio' ? 3 : 2;
+    
+    // More generous hint system for learning
+    let maxHints: number;
+    switch (difficulty.toLowerCase()) {
+      case 'facil':
+      case 'fácil':
+        maxHints = 8; // More hints for beginners
+        break;
+      case 'medio':
+      case 'médio':
+        maxHints = 5; // Moderate hints for intermediate
+        break;
+      case 'dificil':
+      case 'difícil':
+        maxHints = 3; // Fewer hints for advanced
+        break;
+      default:
+        maxHints = 5;
+    }
     
     return {
       board: puzzle.map(row => [...row]),
@@ -294,5 +333,36 @@ export class SudokuService {
       hintsUsed: 0,
       maxHints
     };
+  }
+
+  // Get all possible valid numbers for a cell (helpful for beginners)
+  getPossibleNumbers(board: Board, row: number, col: number): number[] {
+    if (board[row][col] !== 0) return []; // Cell already filled
+    
+    const possible: number[] = [];
+    for (let num = 1; num <= 9; num++) {
+      if (this.isValid(board, row, col, num)) {
+        possible.push(num);
+      }
+    }
+    return possible;
+  }
+
+  // Auto-fill obvious moves (cells with only one possibility)
+  getObviousMoves(board: Board): Array<{row: number, col: number, value: number}> {
+    const moves: Array<{row: number, col: number, value: number}> = [];
+    
+    for (let row = 0; row < 9; row++) {
+      for (let col = 0; col < 9; col++) {
+        if (board[row][col] === 0) {
+          const possible = this.getPossibleNumbers(board, row, col);
+          if (possible.length === 1) {
+            moves.push({row, col, value: possible[0]});
+          }
+        }
+      }
+    }
+    
+    return moves;
   }
 }
